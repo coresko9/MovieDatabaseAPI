@@ -1,0 +1,37 @@
+﻿@{
+    ViewData["Title"] = "API";
+    ViewData["Search"] = "MovieReturn";
+    
+} 
+<div>
+    <a asp-action="Index">Back to Search</a>
+</div>
+
+<h1>Results</h1>
+<hr />
+<br />
+<br />
+<h4>Movie</h4>
+
+@foreach(var a in ViewBag.MovieReturned.Search)
+{
+    <img src="@a.Poster" style="float:right;width:70px;height:85px;"/>
+
+    <h4>@a.Title</h4>
+
+    <li>
+        Released: @a.Year
+   </li>
+   <li>
+        Type: @a.Type
+  </li>
+  <hr />
+}
+
+<div>
+    <a asp-action="Index">Back to Search</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

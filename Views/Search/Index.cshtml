@@ -1,0 +1,12 @@
+﻿@model MovieDataBase.Models.RootObject
+
+<div>
+
+@using (Html.BeginForm("SearchAPI", "Search" ))
+{
+    @Html.Label("Search movies")
+    <input type="text" name="movieTitle"/>
+    <br/>
+    <button type ="submit">Search</button> 
+}
+</div>
