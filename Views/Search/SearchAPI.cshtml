@@ -3,6 +3,10 @@
     ViewData["Search"] = "MovieReturn";
     
 } 
+@model MovieDataBase.Models.RootObject
+
+
+
 <div>
     <a asp-action="Index">Back to Search</a>
 </div>
@@ -12,21 +16,26 @@
 <br />
 <br />
 <h4>Movie</h4>
+<br />
 
-@foreach(var a in ViewBag.MovieReturned.Search)
-{
-    <img src="@a.Poster" style="float:right;width:70px;height:85px;"/>
+<h2>@ViewBag.NoResults</h2>
+@foreach(var a in Model.Search)
+        {
+    <img src="@a?.Poster" style="float:right;width:70px;height:85px;"/>
 
-    <h4>@a.Title</h4>
+        <h4>@a?.Title</h4>
 
-    <li>
-        Released: @a.Year
-   </li>
-   <li>
-        Type: @a.Type
-  </li>
-  <hr />
-}
+        <li>
+            Released: @a?.Year
+        </li>
+        <li>
+            Type: @a?.Type
+        </li>
+        <hr />
+        }
+       
+
+
 
 <div>
     <a asp-action="Index">Back to Search</a>
