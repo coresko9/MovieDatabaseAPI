@@ -1,15 +1,15 @@
 ﻿@model MovieDataBase.Models.RootObject
-
 <div>
-
 @using (Html.BeginForm("SearchAPI", "Search" ))
 {
     <form>
         <div class ="form-group text-center">
-            <h2>Find your favorite movies</h2>
+            <h2  style="font-family:'Courier New', monospace">Find your favorite movies</h2>
             <input type="text" class="form-control" name="movieTitle"  placeholder="Search a movie">
                 <br/>
-            <button class="btn btn-info" style="background-color:#9999ff;opacity:0.8; width:15%" type ="submit"><span class="glyphicon glyphicon-search"></span>Search</button> 
+            <button class="btn btn-info" style="background-color:#9999ff;opacity:0.8" type ="submit">
+                <span class="glyphicon glyphicon-search"></span> Search
+            </button> 
         </div>
     </form>
 }

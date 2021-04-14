@@ -42,7 +42,7 @@ namespace MovieDataBase.Controllers
 
             if (object.Equals(null, movieReturn.Search))
             {
-                ViewBag.SearchString = $"No results found for \"{movieTitle}\"";
+                ViewBag.SearchString = $"No results for \"{movieTitle}\"";
 
                 ViewBag.noResults = true;
                 return View(movieReturn);
@@ -50,8 +50,7 @@ namespace MovieDataBase.Controllers
             }
             else
             {
-                ViewBag.SearchString = $"Results found for \"{movieTitle}\"";
-
+                ViewBag.SearchString = $"Results for \"{movieTitle}\"";
                 ViewBag.noResults = false;
 
                 return View(movieReturn);

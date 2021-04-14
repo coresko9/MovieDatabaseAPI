@@ -19,13 +19,7 @@ namespace MovieDataBase.Controllers
         public MoviesController(MovieDataBaseContext context)
         {
             _context = context;
-
-           
         }
-
-       
-        
-
         // GET: Movies
         public async Task<IActionResult> Index()
         {
