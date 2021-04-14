@@ -1,18 +1,3 @@
 ﻿@model MovieDataBase.Models.RootObject
 
-<div>
-
-@using (Html.BeginForm("SearchAPI", "Search" ))
-{
-     <form>
-        <div class ="form-group text-center">
-            <h2>Find your favorite movies</h2>
-            <input type="text" class="form-control" name="movieTitle"  placeholder="Search a movie">
-                <br/>
-            <button class="btn btn-primary" type ="submit">Search</button> 
-        </div>
-    </form>
-   
-    
-}
-</div>
+@Html.Partial("_Search")

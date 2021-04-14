@@ -11,15 +11,13 @@
 
 @Html.Partial("_Search")
 
-<h3>@ViewBag.SearchString</h3>
 <hr />
-<br />
+<h4">@ViewBag.SearchString</h4>
 
- 
+<br />
 @{
         if (!(bool)ViewBag.noResults)
         {
-             
             <table class ="table table-hover table-condensed">
                 <thead class="thead-dark">
                     <tr>
@@ -34,16 +32,13 @@
                     @foreach(var a in Model.Search)
                         {
                         <tr>
-                            
                                 <td><img src="@a?.Poster" style="float:left;width:70px;height:85px;"/></td>
                                 <td>@a?.imdbId</td>
                                 <td>@a?.Title</td>
                                 <td>@a?.Year</td>
                                 <td>@a?.Type</td>
-                      
                         </tr>
                         }
-
                 </tbody>
             </table>
         }
