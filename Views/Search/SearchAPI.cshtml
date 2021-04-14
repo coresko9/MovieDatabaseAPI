@@ -7,39 +7,48 @@
 
 
 
-<div>
-    <a asp-action="Index">Back to Search</a>
-</div>
 
-<h1>Results</h1>
+
+@Html.Partial("_Search")
+
+<h3>@ViewBag.SearchString</h3>
 <hr />
 <br />
-<br />
-<h4>Movie</h4>
-<br />
 
-<h2>@ViewBag.NoResults</h2>
-@foreach(var a in Model.Search)
+ 
+@{
+        if (!(bool)ViewBag.noResults)
         {
-    <img src="@a?.Poster" style="float:right;width:70px;height:85px;"/>
+             
+            <table class ="table table-hover table-condensed">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">    </th> 
+                        <th scope="col">ID</th> 
+                        <th scope="col">Title</th> 
+                        <th scope="col">Released</th> 
+                        <th scope="col">Type</th> 
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var a in Model.Search)
+                        {
+                        <tr>
+                            
+                                <td><img src="@a?.Poster" style="float:left;width:70px;height:85px;"/></td>
+                                <td>@a?.imdbId</td>
+                                <td>@a?.Title</td>
+                                <td>@a?.Year</td>
+                                <td>@a?.Type</td>
+                      
+                        </tr>
+                        }
 
-        <h4>@a?.Title</h4>
-
-        <li>
-            Released: @a?.Year
-        </li>
-        <li>
-            Type: @a?.Type
-        </li>
-        <hr />
+                </tbody>
+            </table>
         }
-       
+}
 
-
-
-<div>
-    <a asp-action="Index">Back to Search</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

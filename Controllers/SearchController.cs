@@ -2,6 +2,7 @@
 using MovieDataBase.Models;
 using Newtonsoft.Json;
 using RestSharp;
+using System;
 
 namespace MovieDataBase.Controllers
 {
@@ -19,13 +20,14 @@ namespace MovieDataBase.Controllers
         [HttpPost]
         public IActionResult SearchAPI(string movieTitle)
         {
+
             if(!string.IsNullOrWhiteSpace(movieTitle))
             {
-                movieTitle.Trim();
+                movieTitle = movieTitle.Trim();
             }
             else
             {
-                movieTitle = "*";
+                movieTitle = " ";
             }
             var client = new RestClient("https://movie-database-imdb-alternative.p.rapidapi.com/").AddDefaultQueryParameter("s", movieTitle);
             var request = new RestRequest(Method.GET);
@@ -37,14 +39,26 @@ namespace MovieDataBase.Controllers
             this._resp = response;
             movieReturn = JsonConvert.DeserializeObject<RootObject>(this._resp.Content);
             this.search = movieTitle;
-           if (object.Equals(null,movieReturn.Search))
-                return RedirectPermanent($"/Search/NoResults");
-            else
+
+            if (object.Equals(null, movieReturn.Search))
+            {
+                ViewBag.SearchString = $"No results found for \"{movieTitle}\"";
+
+                ViewBag.noResults = true;
                 return View(movieReturn);
+
+            }
+            else
+            {
+                ViewBag.SearchString = $"Results found for \"{movieTitle}\"";
+
+                ViewBag.noResults = false;
+
+                return View(movieReturn);
+            }
         }
-        public IActionResult NoResults()
-        {
-            return View();
-        }
+
+        
     }
+    
 }
