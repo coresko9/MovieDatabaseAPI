@@ -4202,8 +4202,6 @@ body {
 
 .navbar-brand {
   display: inline-block;
-  padding-top: 0.3125rem;
-  padding-bottom: 0.3125rem;
   margin-right: 1rem;
   font-size: 1.25rem;
   line-height: inherit;
@@ -4296,7 +4294,7 @@ body {
   }
   .navbar-expand-sm .navbar-nav .nav-link {
     padding-right: 0.5rem;
-    padding-left: 0.5rem;
+    padding-left: 0.0rem;
   }
   .navbar-expand-sm > .container,
   .navbar-expand-sm > .container-fluid {
