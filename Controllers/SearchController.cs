@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MovieDataBase.Data;
 using MovieDataBase.Models;
 using Newtonsoft.Json;
 using RestSharp;
@@ -11,6 +12,12 @@ namespace MovieDataBase.Controllers
         private IRestResponse _resp;
         private string search;
 
+        private readonly MovieDataBaseContext _context;
+        public SearchController(MovieDataBaseContext context)
+        {
+            _context = context;
+        }
+
 
         [HttpGet]
         public IActionResult Index()
@@ -20,6 +27,8 @@ namespace MovieDataBase.Controllers
         [HttpPost]
         public IActionResult SearchAPI(string movieTitle)
         {
+            //new
+            ViewModelMovie data = new ViewModelMovie();
 
             if(!string.IsNullOrWhiteSpace(movieTitle))
             {
@@ -39,24 +48,36 @@ namespace MovieDataBase.Controllers
             this._resp = response;
             movieReturn = JsonConvert.DeserializeObject<RootObject>(this._resp.Content);
             this.search = movieTitle;
-
+            //new
+            data.SearchResults = movieReturn;
             if (object.Equals(null, movieReturn.Search))
             {
                 ViewBag.SearchString = $"No results for \"{movieTitle}\"";
 
                 ViewBag.noResults = true;
-                return View(movieReturn);
+                //changed from movieReturn
+                return View(data);
 
             }
             else
             {
                 ViewBag.SearchString = $"Results for \"{movieTitle}\"";
                 ViewBag.noResults = false;
-
-                return View(movieReturn);
+                //changed from movieReturn
+                return View(data);
             }
         }
+        [HttpPost]
+        public async void AddMovie([Bind("Id,Title,ReleaseDate")] Movie movie)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(movie);
+                await _context.SaveChangesAsync();
+                
+            }
 
+        }
         
     }
     

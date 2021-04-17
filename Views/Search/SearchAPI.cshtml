@@ -3,44 +3,80 @@
     ViewData["Search"] = "MovieReturn";
     
 } 
-@model MovieDataBase.Models.RootObject
-
-
-
+@model MovieDataBase.Models.ViewModelMovie
 
 
 @Html.Partial("_Search")
 
 <hr />
-<h4 style="font-family:'Courier New', monospace">@ViewBag.SearchString</h4>
+<h5 style="font-family:'Courier New', monospace">@ViewBag.SearchString</h5>
 
 <br />
 @{
         if (!(bool)ViewBag.noResults)
         {
-            <table class ="table table-hover table-condensed">
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">    </th> 
-                        <th scope="col">ID</th> 
-                        <th scope="col">Title</th> 
-                        <th scope="col">Released</th> 
-                        <th scope="col">Type</th> 
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach(var a in Model.Search) 
+            <div class ="container" style="background-color:#150c25;color:#c2c2c2">
+                <div class="row">
+                    <div class="col-sm">
+                        ADD
+                    </div>
+                      <div class="col-sm">
+                        
+                    </div>
+                      <div class="col-sm">
+                        ID
+                    </div>
+                      <div class="col-sm">
+                        Title
+                    </div>
+                      <div class="col-sm">
+                        Release Date
+                    </div>
+                      <div class="col-sm">
+                        Type
+                    </div>
+
+                </div>
+
+                
+            </div>
+            <br/>
+            
+               
+                
+                    @foreach(var a in Model.SearchResults.Search) 
                         {
-                        <tr>
-                                <td><img src="@a?.Poster" style="float:left;width:70px;height:85px;"/></td>
-                                <td><a href="https://www.imdb.com/title/@a?.imdbId" target="_blank">@a?.imdbId</a></td>
-                                <td>@a?.Title</td>
-                                <td>@a?.Year</td>
-                                <td>@a?.Type</td>
-                        </tr>
+                            <form asp-page-handler="AddMovie" method="post">
+                                
+                                <div class="container">
+                                <div class="row">
+                                    <div class="col-sm">
+                                         <button class="btn btn-success" style="background-color:#00aa00;opacity:0.8" type ="submit">
+                                        <span class="glyphicon glyphicon-plus"></span></button>
+                                    </div>
+
+                                    <div class="col-sm"><img src="@a?.Poster" style="float:left;width:70px;height:85px;"/></div>
+
+                                     <div class="col-sm"><a href="https://www.imdb.com/title/@a?.imdbId" target="_blank">@a?.imdbId</a></div>
+
+                                     <div class="col-sm">
+                                        <input type="hidden" name="Title" value="@a.Title"/> @a?.Title
+                                     </div>
+
+                                     <div class="col-sm">
+                                          <input type="hidden" name="ReleaseDate" value="@a.Year"/>@a?.Year
+                                     </div>
+
+                                     <div class="col-sm">@a?.Type</div>
+                                    
+                                </div>
+                                
+                            </div>
+                               
+                            </form>
+                       
                         }
-                </tbody>
-            </table>
+             
         }
 }
 
