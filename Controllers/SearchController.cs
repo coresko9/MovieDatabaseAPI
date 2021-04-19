@@ -4,11 +4,14 @@ using MovieDataBase.Models;
 using Newtonsoft.Json;
 using RestSharp;
 using System;
+using System.Threading.Tasks;
 
 namespace MovieDataBase.Controllers
 {
+    
     public class SearchController : Controller
     {
+        
         private IRestResponse _resp;
         private string search;
 
@@ -68,7 +71,7 @@ namespace MovieDataBase.Controllers
             }
         }
         [HttpPost]
-        public async void AddMovie([Bind("Id,Title,ReleaseDate")] Movie movie)
+        public async Task<IActionResult> AddMovie([Bind("Id,Title,ReleaseDate")] Movie movie)
         {
             if (ModelState.IsValid)
             {
@@ -76,9 +79,10 @@ namespace MovieDataBase.Controllers
                 await _context.SaveChangesAsync();
                 
             }
+            return View("SearchAPI",search);
 
         }
-        
+
     }
     
 }

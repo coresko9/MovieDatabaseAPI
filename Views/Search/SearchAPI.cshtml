@@ -7,11 +7,12 @@
 
 
 @Html.Partial("_Search")
-
+<div>
 <hr />
 <h5 style="font-family:'Courier New', monospace">@ViewBag.SearchString</h5>
 
 <br />
+
 @{
         if (!(bool)ViewBag.noResults)
         {
@@ -21,7 +22,7 @@
                         ADD
                     </div>
                       <div class="col-sm">
-                        
+                       
                     </div>
                       <div class="col-sm">
                         ID
@@ -42,11 +43,11 @@
             </div>
             <br/>
             
-               
-                
                     @foreach(var a in Model.SearchResults.Search) 
                         {
-                            <form asp-page-handler="AddMovie" method="post">
+                            @Html.BeginForm("AddMovie","Search",FormMethod.Post){
+
+                           
                                 
                                 <div class="container">
                                 <div class="row">
@@ -60,11 +61,11 @@
                                      <div class="col-sm"><a href="https://www.imdb.com/title/@a?.imdbId" target="_blank">@a?.imdbId</a></div>
 
                                      <div class="col-sm">
-                                        <input type="hidden" name="Title" value="@a.Title"/> @a?.Title
+                                        <input type="hidden" asp-for="Movies.Title" name="Title" value="@a.Title"/> @a?.Title
                                      </div>
-
+                                     
                                      <div class="col-sm">
-                                          <input type="hidden" name="ReleaseDate" value="@a.Year"/>@a?.Year
+                                          <input type="hidden" asp-for="Movies.ReleaseDate" name="ReleaseDate" value="@a.Year"/>@a?.Year
                                      </div>
 
                                      <div class="col-sm">@a?.Type</div>
@@ -73,14 +74,15 @@
                                 
                             </div>
                                
-                            </form>
+                            }
+                         
                        
                         }
              
         }
 }
 
-
+</div>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
