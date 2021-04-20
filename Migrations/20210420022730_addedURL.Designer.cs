@@ -2,15 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MovieDataBase.Data;
 
 namespace MovieDataBase.Migrations
 {
     [DbContext(typeof(MovieDataBaseContext))]
-    partial class MovieDataBaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210420022730_addedURL")]
+    partial class addedURL
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

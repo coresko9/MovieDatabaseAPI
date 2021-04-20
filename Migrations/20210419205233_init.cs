@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MovieDataBase.Migrations
 {
@@ -14,7 +13,7 @@ namespace MovieDataBase.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(nullable: true),
-                    ReleaseDate = table.Column<DateTime>(nullable: false)
+                    ReleaseDate = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {

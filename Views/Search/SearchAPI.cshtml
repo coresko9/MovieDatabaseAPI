@@ -5,25 +5,21 @@
 } 
 @model MovieDataBase.Models.ViewModelMovie
 
+<partial name="_Search" />
 
-@Html.Partial("_Search")
+
 <div>
 <hr />
 <h5 style="font-family:'Courier New', monospace">@ViewBag.SearchString</h5>
 
-<br />
+    <br />
 
-@{
-        if (!(bool)ViewBag.noResults)
-        {
-            <div class ="container" style="background-color:#150c25;color:#c2c2c2">
+        <div class ="container" style="text-align:center;background-color:#150c25;color:#c2c2c2">
                 <div class="row">
                     <div class="col-sm">
                         ADD
                     </div>
-                      <div class="col-sm">
-                       
-                    </div>
+                      
                       <div class="col-sm">
                         ID
                     </div>
@@ -41,46 +37,51 @@
 
                 
             </div>
-            <br/>
+
+        @if (!(bool)ViewBag.noResults)
+        {
+            
             
                     @foreach(var a in Model.SearchResults.Search) 
-                        {
-                            @Html.BeginForm("AddMovie","Search",FormMethod.Post){
+                    {
+                            <form asp-action="AddMovie" method="post">
+                                    <div class="container">
+                                        <div class="row" style="text-align:center;border-bottom:solid #bcbcbc 1px;">
+                                          
+                                                <div class="col-sm">
+                                                    <button class="btn btn-success" style="background-color:#55ab55;opacity:0.8;" type ="submit">
+                                                    <span class="glyphicon glyphicon-plus"></span></button>
+                                                    <input type="hidden" asp-for="Movies.PictureURL" name="PictureURL" value="@a?.Poster" />
+                                                <img src="@a?.Poster" style="width:70px;height:85px;margin-right:20px;margin-bottom:2px;margin-left:15px"/>
+                                                </div>
 
-                           
+                                                    <div class="col-sm" style="margin-top:30px">
+                                                        <a href="https://www.imdb.com/title/@a?.imdbId" target="_blank">@a?.imdbId</a>
+                                                    </div>
+
+                                                    <div class="col-sm" style="margin-top:30px">
+                                                        <input type="hidden" asp-for="Movies.Title" name="Title" value="@a.Title"/>@a.Title
+                                                    </div>
+                                                     
+                                                    <div class="col-sm" style="margin-top:20px">
+                                                          <input type="hidden" asp-for="Movies.ReleaseDate" name="ReleaseDate" value="@a.Year"/>@a.Year
+                                                    </div>
+
+                                                    <div class="col-sm" style="margin-top:30px">@a?.Type</div>
+                                                
+                                        </div>
                                 
-                                <div class="container">
-                                <div class="row">
-                                    <div class="col-sm">
-                                         <button class="btn btn-success" style="background-color:#00aa00;opacity:0.8" type ="submit">
-                                        <span class="glyphicon glyphicon-plus"></span></button>
                                     </div>
-
-                                    <div class="col-sm"><img src="@a?.Poster" style="float:left;width:70px;height:85px;"/></div>
-
-                                     <div class="col-sm"><a href="https://www.imdb.com/title/@a?.imdbId" target="_blank">@a?.imdbId</a></div>
-
-                                     <div class="col-sm">
-                                        <input type="hidden" asp-for="Movies.Title" name="Title" value="@a.Title"/> @a?.Title
-                                     </div>
-                                     
-                                     <div class="col-sm">
-                                          <input type="hidden" asp-for="Movies.ReleaseDate" name="ReleaseDate" value="@a.Year"/>@a?.Year
-                                     </div>
-
-                                     <div class="col-sm">@a?.Type</div>
-                                    
-                                </div>
                                 
-                            </div>
-                               
-                            }
+                              
+                            </form>
+
                          
                        
-                        }
+                    }
              
         }
-}
+
 
 </div>
 @section Scripts {

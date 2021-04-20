@@ -18,6 +18,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Title)
             </th>
+            <td>
+                @Html.DisplayNameFor(model => model.PictureURL)
+            </td>
             <th>
                 @Html.DisplayNameFor(model => model.ReleaseDate)
             </th>
@@ -29,6 +32,9 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                <img src="@item.PictureURL" style="float:left;width:70px;height:85px;border:3px solid #842bd7" alt="Not Found"/>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ReleaseDate)
