@@ -10,9 +10,17 @@
 
 <div>
 <hr />
-<h5 style="font-family:'Courier New', monospace">@ViewBag.SearchString</h5>
+                
+    @if (ViewBag.OnAdded != null)
 
-    <br />
+    {
+        <div style="font-size:14px;font-family:Segoe UI,Arial,sans-serif;color:#33de99;text-shadow:1px 1px #44efa0;font-weight:600">
+            <p class="glyphicon glyphicon-ok" >  @ViewBag.OnAdded</p> 
+        </div>
+        
+    }
+    <p style="font-size:14px;font-family:Segoe UI,Arial,sans-serif;color:#222222;text-shadow:1px 1px #a0a0a0;font-weight:600">
+             @ViewBag.SearchString</p> 
 
         <div class ="container" style="text-align:center;background-color:#150c25;color:#c2c2c2">
                 <div class="row">

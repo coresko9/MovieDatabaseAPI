@@ -1,0 +1,79 @@
+﻿
+
+@model MovieDataBase.Models.RandomMovie
+
+<partial name="_Search" />
+    <div class ="container" style="text-align:center;background-color:#150c25;color:#c2c2c2">
+                <div class="row">
+                    <div class="col-sm">
+                        Poter
+                    </div>
+                      
+                      <div class="col-sm">
+                        ID
+                    </div>
+                      <div class="col-sm">
+                        Title
+                    </div>
+                      <div class="col-sm">
+                        Release Date
+                    </div>
+                     <div class="col-sm">
+                            Plot
+                    </div>
+
+                      <div class="col-sm">
+                        Type
+                    </div>
+                    <div class ="col-sm">
+                        Genre
+                    </div>
+
+                </div>
+
+                
+            </div>
+   <div class="container">
+
+       <div class="row" style="text-align:center;border-bottom:solid #bcbcbc 1px;">
+         
+               <div class="col-sm">
+               <img src="@Model.Poster" alt="Sorry, no picture provided" style="width:70px;height:85px;margin-right:20px;margin-bottom:2px;margin-left:15px"/>
+               </div>
+               <div class="col-sm">
+               <p>@Model.imdbID</p>
+               </div>
+               <div class="col-sm">
+               <p>@Model.Title</p>
+               </div>
+               <div class="col-sm">
+               <p>
+                   @Model.Released
+               </p>            
+               </div>
+               <div class="col-sm">
+               <p>
+                   @Model.Plot
+               </p>            
+               </div>
+               <div class="col-sm">
+               <p>
+                   @Model.Type
+               </p>            
+               </div>
+                <div class="col-sm">
+               <p>
+                   @Model.Genre
+               </p>            
+               </div>
+               
+       </div>
+   
+   </div>
+                                
+                              
+                    
+
+                         
+                       
+                    
