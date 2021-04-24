@@ -4,6 +4,7 @@ using MovieDataBase.Models;
 using Newtonsoft.Json;
 using RestSharp;
 using System;
+using System.Collections.Generic;
 
 namespace MovieDataBase.Controllers
 {
@@ -41,10 +42,12 @@ namespace MovieDataBase.Controllers
                 movieTitle = " ";
             }
 
+
             var client = new RestClient("https://movie-database-imdb-alternative.p.rapidapi.com/").AddDefaultQueryParameter("s", movieTitle);
             var request = new RestRequest(Method.GET);
-            request.AddHeader("x-rapidapi-key", "08d9fc5c80mshe30902b3b9069d6p1f9f04jsnd7eaa1d2d693");
-            request.AddHeader("x-rapidapi-host", "movie-database-imdb-alternative.p.rapidapi.com");
+            //ADD API KEY AND HEADER HERE
+
+           
             IRestResponse response = client.Execute(request);
             var movieReturn = new RootObject();
 
@@ -76,33 +79,30 @@ namespace MovieDataBase.Controllers
         
         public IActionResult Random()
         {
-            var randomMovie = new RandomMovie();
-            bool noResults = true;
+           
+            
             Random ranNum = new Random();
-            while (noResults)
+            int masterCounter = 0;
+            List<RandomMovie> movieReturnList = new List<RandomMovie>();
+            RandomMovie randomMovie = new RandomMovie();
+            while (movieReturnList.Count < 5 && masterCounter <25)
             {
+                randomMovie = null;
                 var client = new RestClient("https://movie-database-imdb-alternative.p.rapidapi.com/").AddDefaultQueryParameter("i", $"tt{ranNum.Next(10000001, 19916778).ToString().Substring(1)}");
-
                 var request = new RestRequest(Method.GET);
-                request.AddHeader("x-rapidapi-key", "08d9fc5c80mshe30902b3b9069d6p1f9f04jsnd7eaa1d2d693");
-                request.AddHeader("x-rapidapi-host", "movie-database-imdb-alternative.p.rapidapi.com");
+
+                //add api Key and header Here
+              
                 IRestResponse response = client.Execute(request);
-
-
+                
                 randomMovie = JsonConvert.DeserializeObject<RandomMovie>(response.Content);
-                if (randomMovie.imdbID !=null && randomMovie.Title != null)
+                if (!string.IsNullOrWhiteSpace(randomMovie.Title) || !string.IsNullOrWhiteSpace(randomMovie.Poster) )
                 {
-                    noResults = false;
-
+                    movieReturnList.Add(randomMovie);
                 }
-
+                masterCounter++;
             }
-
-
-
-
-            return View("Random",randomMovie);
-
+            return View("Random",movieReturnList);
         }
         public IActionResult AddMovie([Bind("Id,Title,PictureURL,ReleaseDate")] Movie movie)
         {
@@ -115,8 +115,9 @@ namespace MovieDataBase.Controllers
 
             var client = new RestClient("https://movie-database-imdb-alternative.p.rapidapi.com/").AddDefaultQueryParameter("s", _search);
             var request = new RestRequest(Method.GET);
-            request.AddHeader("x-rapidapi-key", "08d9fc5c80mshe30902b3b9069d6p1f9f04jsnd7eaa1d2d693");
-            request.AddHeader("x-rapidapi-host", "movie-database-imdb-alternative.p.rapidapi.com");
+
+            //add api Key and header Here
+
             IRestResponse response = client.Execute(request);
             var movieReturn = new RootObject();
 

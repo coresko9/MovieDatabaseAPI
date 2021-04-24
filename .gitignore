@@ -16,6 +16,8 @@
 # Mono auto generated files
 mono_crash.*
 
+secretkeys.txt
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
