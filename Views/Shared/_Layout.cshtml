@@ -14,46 +14,51 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <style>
+    a:hover{
+        text-decoration : none
+    }
+    </style>
 
 </head>
-<body style="background-color:#ededff;" >
+<body style="background-color:#c7c0ce;" >
 
-    <header style="background:#909099">
+    <header style="background:#26202d;padding-top:12px">
         <nav class="navbar navbar-expand-sm ">
             <div class="container">
-                <a asp-area="" asp-controller="Home" asp-action="Index"  style="text-align:center;position:absolute;left:120px;font-size:32px;font-family:Segoe UI,Arial,sans-serif;color:#6666ff ;text-shadow:1px 1px #bbbbbb;font-weight:900">
-                    Movie-Casa
+                <a asp-area="" asp-controller="Home" asp-action="Index"  style="color:#5200cc;text-align:center;position:absolute;left:120px;font-size:32px;font-family:Segoe UI,Arial,sans-serif;text-shadow:1px 1px #bbbbbb;font-weight:900;">
+                    <span style="background:linear-gradient(to right,  #BE023C , #AA057A);border:solid #FF0250 1px;padding:5px;border-radius:5px">Movie-Casa</span>
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse" style="position: absolute;right: 60px;">
-                    <ul class="navbar-nav flex-grow-1" style="text-align:center;font-size:20px;font-family:Segoe UI,Arial,sans-serif;color:#babaff ;text-shadow:1px 1px #bbbbbb;font-weight:600;" >
-                        <li class="nav-item" >
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index" style="margin:0px 2px 0px 16px;border:2px solid #9999ff;border-radius:5px;position:relative;padding:2px 6px;background:#9999ff">Home
+                    <ul class="navbar-nav flex-grow-1" style="font-size:24px;font-family:Segoe UI,Arial,sans-serif;text-shadow:2px 1px #5555e9;font-weight:600;" >
+                        <li class="nav-item">
+                            <a  class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index" style="text-align:center;color:#9999ff !important;position:relative;border-radius:5px;padding:6px 6px;margin-right:4px;background:linear-gradient(to right, #AA057A , #A705AA)">Home
                             </a>
                         </li>
 
                         <li class="nav-item" >
-                            <a class="nav-link text-dark" style="margin-right:2px;border:2px solid #9999ff;border-radius:5px;position:relative;padding:2px 6px;background:#9999ff" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy
+                            <a class="nav-link text-dark"  asp-area="" asp-controller="Home" asp-action="Privacy" style="text-align:center;color:#9999ff !important;position:relative;border-radius:5px;padding:6px 6px;margin-right:4px;background:linear-gradient(to right, #A705AA , #FF02E8)">Privacy
                             </a>
                         </li>
 
                         <li class="nav-item" >
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Movies" asp-action="Index" style="margin-right:2px;border:2px solid #9999ff;border-radius:5px;position:relative;padding:2px 6px;background:#9999ff">Movies
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Movies" asp-action="Index" style="text-align:center;color:#9999ff !important;position:relative;border-radius:5px;padding:6px 6px;margin-right:4px;background:linear-gradient(to right, #FF02E8 , #B800EE)" >My Movies
                             </a>
                         </li>
 
                         <li class="nav-item" >
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Search" asp-action="Index" style="position:relative;padding:2px 6px;margin-right:2px;border:2px solid #9999ff;border-radius:5px;background:#9999ff">Search
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Search" asp-action="Index" style="text-align:center;color:#9999ff !important;border-radius:5px;position:relative;padding:6px 6px;margin-right:4px;background:linear-gradient(to right, #B800EE , #5C00B3)">Search
                             </a>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
-                     <hr style="width:97%;background-color:#6666ff"/>
+                     <hr style="height:5px;background: linear-gradient(to right , #FF0250 , #9300FF , #060473  ) "/>
     </header>
     <div>
     </div>
