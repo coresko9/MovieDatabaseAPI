@@ -12,32 +12,42 @@
 <hr />
                 
     @if (ViewBag.OnAdded != null)
-
     {
-        <div style="font-size:14px;font-family:Segoe UI,Arial,sans-serif;color:#33de99;text-shadow:1px 1px #44efa0;font-weight:600">
+        @if (ViewBag.IsAdded)
+        {
+            <div style="font-size:14px;font-family:Segoe UI,Arial,sans-serif;color:#0f5c03;text-shadow:1px 1px 1px #0f5c03;font-weight:600">
             <p class="glyphicon glyphicon-ok" >  @ViewBag.OnAdded</p> 
         </div>
+        }
+        else
+        {
+            <div style="font-size:14px;font-family:Segoe UI,Arial,sans-serif;color:#a3000d;text-shadow:1px 1px 1px #a3000d;font-weight:600">
+            <p class="glyphicon glyphicon-remove" >  @ViewBag.OnAdded</p> 
+        </div>
+        }
+
+        
         
     }
     <p style="font-size:14px;font-family:Segoe UI,Arial,sans-serif;color:#222222;text-shadow:1px 1px #a0a0a0;font-weight:600">
              @ViewBag.SearchString</p> 
 
-        <div class ="container" style="text-align:center;background-color:#150c25;color:#c2c2c2">
-                <div class="row">
+        <div class ="container" style="text-align:center;background-color:#150c25;color:#c2c2c2;height:32px">
+                <div class="row" >
                     <div class="col-sm">
                         ADD
                     </div>
                       
-                      <div class="col-sm">
+                    <div class="col-sm">
                         ID
                     </div>
-                      <div class="col-sm">
+                    <div class="col-sm">
                         Title
                     </div>
-                      <div class="col-sm">
+                    <div class="col-sm">
                         Release Date
                     </div>
-                      <div class="col-sm">
+                    <div class="col-sm">
                         Type
                     </div>
 
@@ -48,33 +58,21 @@
 
         @if (!(bool)ViewBag.noResults)
         {
-            
-            
                     @foreach(var a in Model.SearchResults.Search) 
                     {
                             <form asp-action="AddMovie" method="post">
-                                    <div class="container">
-                                        <div class="row" style="text-align:center;border-bottom:solid #bcbcbc 1px;">
-                                          
+                                <input type="hidden" asp-for="Movies.imdbID" name="imdbID" value="@a.imdbId" />
+                                <input type="hidden" asp-for="Movies.Title" name="Title"value="@a.Title"/> 
+                                    <div class="container" style="background:#e6dfed">
+                                        <div class="row" style="text-align:center;vertical-align:middle;font-size:22px;border-bottom:solid #c9c9f9 1px;margin-top:12px;">
                                                 <div class="col-sm">
-                                                    <button class="btn btn-success" style="background-color:#55ab55;opacity:0.8;" type ="submit">
+                                                    <button class="btn btn-success" style="float:left;background-color:#55ab55;opacity:0.8;" type ="submit">
                                                     <span class="glyphicon glyphicon-plus"></span></button>
-                                                    <input type="hidden" asp-for="Movies.PictureURL" name="PictureURL" value="@a?.Poster" />
-                                                <img src="@a?.Poster" style="width:70px;height:85px;margin-right:20px;margin-bottom:2px;margin-left:15px"/>
+                                                <img src="@a?.Poster" style="width:100px;height:120px;margin-right:20px;margin-left:15px;margin-bottom:12px"/>
                                                 </div>
-
-                                                    <div class="col-sm" style="margin-top:30px">
-                                                        <a href="https://www.imdb.com/title/@a?.imdbId" target="_blank">@a?.imdbId</a>
-                                                    </div>
-
-                                                    <div class="col-sm" style="margin-top:30px">
-                                                        <input type="hidden" asp-for="Movies.Title" name="Title" value="@a.Title"/>@a.Title
-                                                    </div>
-                                                     
-                                                    <div class="col-sm" style="margin-top:20px">
-                                                          <input type="hidden" asp-for="Movies.ReleaseDate" name="ReleaseDate" value="@a.Year"/>@a.Year
-                                                    </div>
-
+                                                    <div class="col-sm" style="margin-top:30px"><a href="https://www.imdb.com/title/@a?.imdbId" target="_blank">@a?.imdbId</a></div>
+                                                    <div class="col-sm" style="margin-top:30px">@a.Title</div>
+                                                    <div class="col-sm" style="margin-top:30px">@a.Year</div>
                                                     <div class="col-sm" style="margin-top:30px">@a?.Type</div>
                                                 
                                         </div>

@@ -18,9 +18,9 @@
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ReleaseDate" class="control-label">Release Year</label>
-                <input asp-for="ReleaseDate" max="@DateTime.Now.Year" min ="1890"  value="2000" class="form-control" />
-                <span asp-validation-for="ReleaseDate" class="text-danger"></span>
+                <label asp-for="Released" class="control-label">Release Year</label>
+                <input asp-for="Released" max="@DateTime.Now.Year" min ="1890"  value="2000" class="form-control" />
+                <span asp-validation-for="Released" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="ADD" class="btn btn-primary" />

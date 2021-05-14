@@ -1,0 +1,140 @@
+﻿@model ViewModelMovie
+<style>
+    .discover-palette{
+        border: 5px solid #a5a5dc;
+        box-shadow: 7px 5px 5px #cdabc0;
+        top:15%;
+        height:140px;
+        position:relative;
+        background-color:#ada3b8;
+        padding:5px;
+    }
+    .select-style{
+        background:linear-gradient( #b7b4db,#c8c7d4);
+        width:20%;
+        font-size:15px;
+        font-family:Segoe UI,Arial,sans-serif;
+        color:#423539;
+        background-color: #3d292f
+    }
+    
+</style>
+<div>
+    <div class="discover-palette">
+        <label style="top:10px">Search by genre</label>
+    
+        <form asp-action="Discover" method="post">
+           
+            <select class="select-style" name="genre" id="genre">
+                <option value="Action">...</option> 
+                <option value="Action">Action</option> 
+                <option value="Adventure">Adventure</option> 
+                <option value="Animation">Animation</option> 
+                <option value="Biography">Biography</option> 
+                <option value="Comedy">Comedy</option> 
+                <option value="Crime">Crime</option> 
+                <option value="Documentary">Documentary</option> 
+                <option value="Drama">Drama</option> 
+                <option value="Family">Family</option> 
+                <option value="Fantasy">Fantasy</option> 
+                <option value="Film Noir">Film Noir</option> 
+                <option value="History">History</option> 
+                <option value="Horror">Horror</option> 
+                <option value="Music">Music</option> 
+                <option value="Musical">Musical</option> 
+                <option value="Mystery">Mystery</option> 
+                <option value="Romance">Romance</option> 
+                <option value="Sci-Fi">Sci-Fi</option> 
+                <option value="Short Film">Short Film </option> 
+                <option value="Superhero">Superhero</option> 
+                <option value="Thriller">Thriller</option> 
+                <option value="War">War</option> 
+                <option value="Western">Western</option> 
+            </select>                                         
+        <br />
+        <br />
+
+        <button class="btn btn-info" type="submit" style="margin-top:10px;position:absolute;bottom:5%;left:5px;background: linear-gradient(to right,  #BE023C , #AA057A);border-color:#ec5555;">Discover</button>
+
+        </form>
+
+        <br />
+    
+    </div>
+        @if(Model != null)
+        {
+    
+                    <br />
+                     @if (ViewBag.OnAdded != null)
+                    {
+                        <div style="font-size:14px;font-family:Segoe UI,Arial,sans-serif;color:#33de99;text-shadow:1px 1px #44efa0;font-weight:600">
+                            <p class="glyphicon glyphicon-ok" >  @ViewBag.OnAdded</p> 
+                        </div>
+                    }
+    
+
+                <div class ="container" style="text-align:center;background-color:#150c25;color:#c2c2c2;height:32px">
+                        <div class="row">
+                            <div class="col-sm">
+                                Add
+                            </div>
+                            <div class="col-sm">
+                                Poster
+                            </div>
+                      
+                              <div class="col-sm">
+                                ID
+                            </div>
+                              <div class="col-sm">
+                                Title
+                            </div>
+                              <div class="col-sm">
+                                Release Date
+                            </div>
+                             <div class="col-sm">
+                                    Plot
+                            </div>
+
+                              <div class="col-sm">
+                                Type
+                            </div>
+                            <div class ="col-sm">
+                                Genre
+                            </div>
+
+                        </div>
+
+                
+                    </div>
+
+                   @foreach(RandomMovie movie in Model.RandomMovies)
+                   {
+                          <form asp-action="AddDiscoverMovie" method="post">
+                             <input type="hidden" asp-for="Movies.imdbID" name="imdbID" value="@movie.imdbID" />
+                             <input type="hidden" asp-for="Movies.Title" name="Title"value="@movie.Title"/> 
+
+                             <div class="container" style="background:#e6dfed">
+
+                 
+                                 <div class="row" style="text-align:center;vertical-align:middle;font-size:22px;border-bottom:solid #c9c9f9 1px;margin-top:12px;">
+                                 
+                                     <div class="col-sm" style="margin-top:30px">
+                                         <button class="btn btn-success" style="float:left;background-color:#55ab55;opacity:0.8;" type ="submit">
+                                             <span class="glyphicon glyphicon-plus"/>
+                                         </button>
+
+                                         <img src="@movie.Poster" alt="Sorry, no picture provided" style="float:right;width:70px;height:85px;margin-right:20px;margin-bottom:2px;margin-left:15px"/>
+                                     </div>
+
+                                     <div class="col-sm" style="margin-top:30px"><a href="https://www.imdb.com/title/@movie.imdbID" target="_blank">@movie.imdbID</a></div>
+                                     <div class="col-sm" style="margin-top:30px">@movie.Title</div>
+                                     <div class="col-sm" style="margin-top:30px">@movie.Year</div>
+                                     <div class="col-sm" style="margin-top:30px">@movie.Type</div>
+                                     <div class="col-sm" style="margin-top:30px">@movie.Genre</div>
+                                 </div>
+                             </div>
+                         </form>
+                   }
+
+        }
+</div>

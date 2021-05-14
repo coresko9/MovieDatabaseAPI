@@ -5,22 +5,24 @@ using Newtonsoft.Json;
 using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MovieDataBase.Controllers
 {
 
     public class SearchController : Controller
     {
-
         private IRestResponse _resp;
         private static string _search;
         private static ViewModelMovie _data;
-        private RootObject _movieReturnInfo;
 
         private readonly MovieDataBaseContext _context;
-        public SearchController(MovieDataBaseContext context)
-        {
+        public SearchController(MovieDataBaseContext context) 
+        { 
             _context = context;
+
+
+
         }
         [HttpGet]
         public IActionResult Index()
@@ -46,8 +48,8 @@ namespace MovieDataBase.Controllers
             var client = new RestClient("https://movie-database-imdb-alternative.p.rapidapi.com/").AddDefaultQueryParameter("s", movieTitle);
             var request = new RestRequest(Method.GET);
             //ADD API KEY AND HEADER HERE
-
-           
+            request.AddHeader("x-rapidapi-key", "08d9fc5c80mshe30902b3b9069d6p1f9f04jsnd7eaa1d2d693");
+            request.AddHeader("x-rapidapi-host", "movie-database-imdb-alternative.p.rapidapi.com");
             IRestResponse response = client.Execute(request);
             var movieReturn = new RootObject();
 
@@ -56,7 +58,6 @@ namespace MovieDataBase.Controllers
             _search = movieTitle;
             //new
             _data.SearchResults = movieReturn;
-            _movieReturnInfo = _data.SearchResults;
 
             if (object.Equals(null, movieReturn.Search))
             {
@@ -65,18 +66,52 @@ namespace MovieDataBase.Controllers
                 ViewBag.noResults = true;
                 //changed from movieReturn
                 return View(_data);
-
             }
             else
             {
+
                 ViewBag.SearchString = $"Results for \"{movieTitle}\"";
                 ViewBag.noResults = false;
                 //changed from movieReturn
                 return View(_data);
             }
         }
+        [HttpPost]
+        public IActionResult Discover(string genre)
+        {
+            RootDiscovery rootDiscovery = new RootDiscovery();
+            var client = new RestClient($"https://imdb8.p.rapidapi.com/title/get-popular-movies-by-genre?genre=%2Fchart%2Fpopular%2Fgenre%2F{genre.ToLower()}");
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("x-rapidapi-key", "08d9fc5c80mshe30902b3b9069d6p1f9f04jsnd7eaa1d2d693");
+            request.AddHeader("x-rapidapi-host", "imdb8.p.rapidapi.com");
+            IRestResponse response = client.Execute(request);
+            string[] discoverTitleRaw = JsonConvert.DeserializeObject<string[]>(response.Content);
+            List<string> discoverTitleOnly = new List<string>();
+            foreach (string rawTitle in discoverTitleRaw)
+            {
+                discoverTitleOnly.Add(rawTitle.Substring(rawTitle.IndexOf("tt")).Replace('/', ' ').Trim());
+            }
+            rootDiscovery.TopByGenre = discoverTitleOnly.ToArray();
+            _data = new ViewModelMovie();
+            int countReturn = 0;
+            List<RandomMovie> movieList = new List<RandomMovie>();
+            for (int i = 0; countReturn < 50 && i <rootDiscovery.TopByGenre.Length; i++, countReturn++)
+            {
+                var newClient = new RestClient("https://movie-database-imdb-alternative.p.rapidapi.com/").AddDefaultQueryParameter("i", rootDiscovery.TopByGenre[i]);
+                request = new RestRequest(Method.GET);
 
+                //add api Key and header Here
+                request.AddHeader("x-rapidapi-key", "08d9fc5c80mshe30902b3b9069d6p1f9f04jsnd7eaa1d2d693");
+                request.AddHeader("x-rapidapi-host", "movie-database-imdb-alternative.p.rapidapi.com");
+
+                response = newClient.Execute(request);
+                movieList.Add(JsonConvert.DeserializeObject<RandomMovie>(response.Content));
+            }
+            _data.RandomMovies = movieList;
         
+            return View(_data);
+
+        }       
         public IActionResult Random()
         {
            
@@ -85,6 +120,7 @@ namespace MovieDataBase.Controllers
             int masterCounter = 0;
             List<RandomMovie> movieReturnList = new List<RandomMovie>();
             RandomMovie randomMovie = new RandomMovie();
+            _data = new ViewModelMovie();
             while (movieReturnList.Count < 5 && masterCounter <25)
             {
                 randomMovie = null;
@@ -92,61 +128,142 @@ namespace MovieDataBase.Controllers
                 var request = new RestRequest(Method.GET);
 
                 //add api Key and header Here
-              
+                request.AddHeader("x-rapidapi-key", "08d9fc5c80mshe30902b3b9069d6p1f9f04jsnd7eaa1d2d693");
+                request.AddHeader("x-rapidapi-host", "movie-database-imdb-alternative.p.rapidapi.com");
+
                 IRestResponse response = client.Execute(request);
                 
                 randomMovie = JsonConvert.DeserializeObject<RandomMovie>(response.Content);
+              
+
+
                 if (!string.IsNullOrWhiteSpace(randomMovie.Title) || !string.IsNullOrWhiteSpace(randomMovie.Poster) )
                 {
                     movieReturnList.Add(randomMovie);
                 }
                 masterCounter++;
             }
-            return View("Random",movieReturnList);
+            _data.RandomMovies = movieReturnList;
+            return View("Random",_data);
         }
-        public IActionResult AddMovie([Bind("Id,Title,PictureURL,ReleaseDate")] Movie movie)
+        public IActionResult AddMovie(string imdbID,string Title)
         {
-            if (ModelState.IsValid)
+            ViewBag.IsAdded = true;
+            if (_context.Movie.Any(x => x.imdbID == imdbID))
             {
-                _context.Add(movie);
-                _context.SaveChanges();
-            }
-            _data = new ViewModelMovie();
-
-            var client = new RestClient("https://movie-database-imdb-alternative.p.rapidapi.com/").AddDefaultQueryParameter("s", _search);
-            var request = new RestRequest(Method.GET);
-
-            //add api Key and header Here
-
-            IRestResponse response = client.Execute(request);
-            var movieReturn = new RootObject();
-
-            this._resp = response;
-            movieReturn = JsonConvert.DeserializeObject<RootObject>(this._resp.Content);
-
-            //new
-            _data.SearchResults = movieReturn;
-            _movieReturnInfo = _data.SearchResults;
-
-            if (object.Equals(null, movieReturn.Search))
-            {
-                ViewBag.SearchString = $"No results for \"{_search}\"";
-
-                ViewBag.noResults = true;
-                //changed from movieReturn
+                ViewBag.OnAdded = $"\"{Title}\" already exists";
+                ViewBag.SearchString = $"Results for \"{_search}\"";
+                ViewBag.noResults = false;
+                ViewBag.IsAdded = false;
                 return View("SearchAPI", _data);
-
             }
             else
             {
-                ViewBag.OnAdded = $"Added: \"{movie.Title}\"";
+                if (ModelState.IsValid)
+                {
+                    Movie detailedMovie = new Movie();
+                    var client = new RestClient("https://movie-database-imdb-alternative.p.rapidapi.com/").AddDefaultQueryParameter("i", $"{imdbID}");
+                    var request = new RestRequest(Method.GET);
+                    //ADD API KEY AND HEADER HERE
+                    request.AddHeader("x-rapidapi-key", "08d9fc5c80mshe30902b3b9069d6p1f9f04jsnd7eaa1d2d693");
+                    request.AddHeader("x-rapidapi-host", "movie-database-imdb-alternative.p.rapidapi.com");
+                    IRestResponse response = client.Execute(request);
+                    this._resp = response;
+
+                    detailedMovie = JsonConvert.DeserializeObject<Movie>(this._resp.Content);
+                    _context.Add(detailedMovie);
+                    _context.SaveChanges();
+                }
+                ViewBag.OnAdded = $"Added: \"{Title}\"";
                 ViewBag.SearchString = $"Results for \"{_search}\"";
                 ViewBag.noResults = false;
                 //changed from movieReturn
                 return View("SearchAPI", _data);
             }
+           
+        }
+        public IActionResult AddRandomMovie(string imdbID, string Title)
+        {
+            ViewBag.IsAdded = true;
+            if (_context.Movie.Any(x => x.imdbID == imdbID))
+            {
+                ViewBag.OnAdded = $"\"{Title}\" already exists";
+                ViewBag.SearchString = $"Results for \"{_search}\"";
+                ViewBag.noResults = false;
+                ViewBag.IsAdded = false;
+                return View("Random", _data);
+            }
+            else
+            {
+                if (ModelState.IsValid)
+                {
+                    Movie detailedMovie = new Movie();
+                    var client = new RestClient("https://movie-database-imdb-alternative.p.rapidapi.com/").AddDefaultQueryParameter("i", $"{imdbID}");
+                    var request = new RestRequest(Method.GET);
+                    //ADD API KEY AND HEADER HERE
+                    request.AddHeader("x-rapidapi-key", "08d9fc5c80mshe30902b3b9069d6p1f9f04jsnd7eaa1d2d693");
+                    request.AddHeader("x-rapidapi-host", "movie-database-imdb-alternative.p.rapidapi.com");
+                    IRestResponse response = client.Execute(request);
+                    this._resp = response;
+
+                    detailedMovie = JsonConvert.DeserializeObject<Movie>(this._resp.Content);
+                    _context.Add(detailedMovie);
+                    _context.SaveChanges();
+                    ViewBag.OnAdded = $"Added: \"{Title}\"";
+                    ViewBag.SearchString = $"Results for \"{_search}\"";
+                    ViewBag.noResults = false;
+                }
+
+                //changed from movieReturn
+                return View("Random", _data);
+            }
+
+        }
+        public IActionResult AddDiscoverMovie(string imdbID, string Title)
+        {
+            ViewBag.IsAdded = true;
+            if (_context.Movie.Any(x => x.imdbID == imdbID))
+            {
+                ViewBag.OnAdded = $"\"{Title}\" already exists";
+                ViewBag.SearchString = $"Results for \"{_search}\"";
+                ViewBag.noResults = false;
+                ViewBag.IsAdded = false;
+                return View("Discover", _data);
+            }
+            else
+            {
+                if (ModelState.IsValid)
+                {
+                    Movie detailedMovie = new Movie();
+                    var client = new RestClient("https://movie-database-imdb-alternative.p.rapidapi.com/").AddDefaultQueryParameter("i", $"{imdbID}");
+                    var request = new RestRequest(Method.GET);
+                    //ADD API KEY AND HEADER HERE
+                    request.AddHeader("x-rapidapi-key", "08d9fc5c80mshe30902b3b9069d6p1f9f04jsnd7eaa1d2d693");
+                    request.AddHeader("x-rapidapi-host", "movie-database-imdb-alternative.p.rapidapi.com");
+                    IRestResponse response = client.Execute(request);
+                    this._resp = response;
+
+                    detailedMovie = JsonConvert.DeserializeObject<Movie>(this._resp.Content);
+                    _context.Add(detailedMovie);
+                    _context.SaveChanges();
+                    ViewBag.OnAdded = $"Added: \"{Title}\"";
+                    ViewBag.SearchString = $"Results for \"{_search}\"";
+                    ViewBag.noResults = false;
+                }
+
+                //changed from movieReturn
+                return View("Discover", _data);
+            }
+
         }
 
+
+        [HttpGet]
+        public IActionResult Discover()
+        {
+            return View();
+        }
+        
     }
 
 }

@@ -1,0 +1,83 @@
+﻿@model List<Movie>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div>
+
+         
+        <input class="form-control" style="width:30%;text-align:center;display:inline-block;margin-right:10%" type="text" id="txtsearch" placeholder="Quick Find"/>
+        <p style="text-align:center;font-size:44px;display:inline-block;font-family:Segoe UI,Arial,sans-serif;color:#333387 ;text-shadow:2px 2px #bbbbbb;font-weight:900">My Movies</p>
+
+    
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Title
+            </th>
+            <th>
+               Poster
+            </th>
+            <th>
+                Release Date
+            </th>
+            <th></th>
+            <th>
+                               <a asp-controller="Search" asp-action="Index">
+              <span class="glyphicon glyphicon-plus" style="font-size:30px ;float:right ;color: #008715; margin-right:10% " ></span>
+              </a>
+          </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model)
+{
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                <img src="@item.Poster" style="float:left;width:100px;height:125px;border-radius:5px; border:1px ridge rgb(132 , 43 , 215 , 0.1)" alt="Not Found"/>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Released)
+            </td>
+            <td style="margin-right:10%">
+                <a class="btn btn-info" asp-action="Edit" asp-route-id="@item.imdbID" style="border-color:#221b5e; border-radius: 100px 50px / 50px; background-color: rgb(50,54,168)"><span class="glyphicon glyphicon-pencil"/></a> 
+                <a class="btn btn-info" asp-action="Details" asp-route-id="@item.imdbID" style="border-color:#221b5e; border-radius: 100px 50px / 50px; background-color: rgb(50,54,168)"><span class="glyphicon glyphicon-list"/></a> 
+                <a class="btn btn-info" asp-action="Delete" asp-route-id="@item.imdbID" style="border-color:#221b5e; border-radius: 100px 50px / 50px; background-color: rgb(50,54,168)"><span class="glyphicon glyphicon-trash"/></a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $("#txtsearch").on("keyup",function () {
+    var txtenter = $(this).val();
+    $("table tr").each(function (results){
+    if(results !== 0)
+    {
+        var id = $(this).find("td:nth-child(1)").text();
+        if(id.indexOf(txtenter) !==0 && id.toLowerCase().indexOf(txtenter.toLowerCase()) <0)
+        {
+            $(this).hide();
+        }
+        else
+        {
+            $(this).show();
+        }
+
+    }
+    });
+    });
+</script>
+</div>
+
+<footer>
+<a asp-action="Index" style="float:right">View Less</a>
+<br />
+
+</footer>

@@ -21,7 +21,6 @@ namespace MovieDataBase.Models
         public string Country { get; set; }
         public string Awards { get; set; }
         public string Poster { get; set; }
-        public Ratings[] Ratings { get; set; }
         public string Metascore { get; set; }
         public string imdbRating { get; set; }
         public string imdbVotes { get; set; }
@@ -32,12 +31,5 @@ namespace MovieDataBase.Models
         public string Production { get; set; }
         public string Website { get; set; }
         public string Response { get; set; }
-    }
-
-    public class Ratings
-    {
-        public string Source { get; set; }
-        public string Value { get; set; }
-
     }
 }

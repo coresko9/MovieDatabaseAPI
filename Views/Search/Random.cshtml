@@ -1,33 +1,30 @@
-﻿<script>
-    var a = document.getElementsByClassName("collapsible");
-    var i;
-
-    for(int i = 0;i < coll.length; i++){
-          coll[i].addEventListener("click", function() {
-    this.classList.toggle("active");
-    var content = this.nextElementSibling;
-    if (content.style.maxHeight){
-      content.style.maxHeight = null;
-    } else {
-      content.style.maxHeight = content.scrollHeight + "px";
-    } 
-    });
-    }
-</script>
+﻿
 
 
-@model List<RandomMovie>
+@model ViewModelMovie
 
 <partial name="_Search" />
 
         <div class ="form-group text-center" style="margin-left:20%;margin-top:2%;width:60%;text-align:center">
             <p style="font-size:20px;font-family:Segoe UI,Arial,sans-serif;color:#6666ff ;text-shadow:2px 2px #bbbbbb;font-weight:400">Not interested in these results? Try again!</p>
         </div>
-<br />
-    <div class ="container" style="text-align:center;background-color:#150c25;color:#c2c2c2">
+
+            <br />
+             @if (ViewBag.OnAdded != null)
+            {
+                <div style="font-size:14px;font-family:Segoe UI,Arial,sans-serif;color:#33de99;text-shadow:1px 1px #44efa0;font-weight:600">
+                    <p class="glyphicon glyphicon-ok" >  @ViewBag.OnAdded</p> 
+                </div>
+            }
+    
+
+        <div class ="container" style="text-align:center;background-color:#150c25;color:#c2c2c2;height:32px">
                 <div class="row">
                     <div class="col-sm">
-                        Poter
+                        Add
+                    </div>
+                    <div class="col-sm">
+                        Poster
                     </div>
                       
                       <div class="col-sm">
@@ -54,49 +51,36 @@
 
                 
             </div>
-   <div class="container" style="border:2px solid #c2c2c2">
 
-           @foreach(RandomMovie movie in Model)
-        {
-       <div class="row" style="text-align:center;border-bottom:solid #bcbcbc 1px;">
-         
-       
-            <div class="col-sm">
-               <img src="@movie.Poster" alt="Sorry, no picture provided" style="width:70px;height:85px;margin-right:20px;margin-bottom:2px;margin-left:15px"/>
-               </div>
+           @foreach(RandomMovie movie in Model.RandomMovies)
+           {
+                  <form asp-action="AddRandomMovie" method="post">
+                     <input type="hidden" asp-for="Movies.imdbID" name="imdbID" value="@movie.imdbID" />
+                     <input type="hidden" asp-for="Movies.Title" name="Title"value="@movie.Title"/> 
 
-               <div class="col-sm">
-               <p><a href="https://www.imdb.com/title/@movie.imdbID">@movie.imdbID</a></p>
-               </div>
+                     <div class="container" style="background:#e6dfed">
 
-               <div class="col-sm">
-               <p>@movie.Title</p>
-               </div>
+                 
+                         <div class="row" style="text-align:center;vertical-align:middle;font-size:22px;border-bottom:solid #c9c9f9 1px;margin-top:12px;">
+                                 
+                             <div class="col-sm" style="margin-top:30px">
+                                 <button class="btn btn-success" style="float:left;background-color:#55ab55;opacity:0.8;" type ="submit">
+                                     <span class="glyphicon glyphicon-plus"/>
+                                 </button>
 
-               <div class="col-sm">
-               <p>@movie.Released</p>            
-               </div>
+                                 <img src="@movie.Poster" alt="Sorry, no picture provided" style="float:right;width:70px;height:85px;margin-right:20px;margin-bottom:2px;margin-left:15px"/>
+                             </div>
 
-               <button class ="collapsible">View summary for "@movie.Title"
-                <div class="content col-sm">
-                    <p>@movie.Plot</p>            
-                </div>
-               </button>
-               
-
-               <div class="col-sm">
-               <p>@movie.Type</p>            
-               </div>
-
-                <div class="col-sm">
-               <p>@movie.Genre</p>            
-               </div>
-               
-               
-       </div>
-       }
+                             <div class="col-sm" style="margin-top:30px"><a href="https://www.imdb.com/title/@movie.imdbID" target="_blank">@movie.imdbID</a></div>
+                             <div class="col-sm" style="margin-top:30px">@movie.Title</div>
+                             <div class="col-sm" style="margin-top:30px">@movie.Year</div>
+                             <div class="col-sm" style="margin-top:30px">@movie.Type</div>
+                             <div class="col-sm" style="margin-top:30px">@movie.Genre</div>
+                         </div>
+                     </div>
+                 </form>
+           }
    
-   </div>
                                 
                               
                     

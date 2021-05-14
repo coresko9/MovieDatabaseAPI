@@ -1,50 +1,87 @@
-﻿@model IEnumerable<MovieDataBase.Models.Movie>
+﻿@model MovieListViewModel
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
-<ul class="navbar-nav flex-grow-1">
-<li>
-     <a asp-action="Create">Create New</a>
-</li>
+<div>
 
-</ul>
-    
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Title)
+               
             </th>
-            <td>
-                @Html.DisplayNameFor(model => model.PictureURL)
-            </td>
+
             <th>
-                @Html.DisplayNameFor(model => model.ReleaseDate)
+                Title
+            </th>
+            <th>
+                Release Date
             </th>
             <th></th>
+            <th>
+                <a asp-controller="Search" asp-action="Index">
+              <span class="glyphicon glyphicon-plus" style="font-size:30px ;float:right ;color: #008715; margin-right:10% " ></span>
+              </a>
+          </th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.Movies) {
         <tr>
+            <td>
+                <img src="@item.Poster" style="float:left;width:100px;height:125px;border-radius:5px; border:1px ridge rgb(132 , 43 , 215 , 0.1)" alt="Not Found"/>
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
             <td>
-                <img src="@item.PictureURL" style="float:left;width:70px;height:85px;border:3px solid #842bd7" alt="Not Found"/>
+                @Html.DisplayFor(modelItem => item.Released)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReleaseDate)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            <td style="margin-right:10%">
+                <a class="btn btn-info" href="https://www.google.com/search?q=watch+@item.Title" target="_blank" style="border-color:#221b5e; border-radius: 100px 50px / 50px; background-color: rgb(80, 111, 222,.8)"><span class="glyphicon glyphicon-play-circle"/></a>
+                <a class="btn btn-info" asp-action="Edit" asp-route-id="@item.imdbID" style="border-color:#221b5e; border-radius: 100px 50px / 50px; background-color: rgb(80, 111, 222,.8)"><span class="glyphicon glyphicon-pencil"/></a> 
+                <a class="btn btn-info" asp-action="Details" asp-route-id="@item.imdbID" style="border-color:#221b5e; border-radius: 100px 50px / 50px; background-color: rgb(80, 111, 222,.8)"><span class="glyphicon glyphicon-list"/></a> 
+                <a class="btn btn-info" asp-action="Delete" asp-route-id="@item.imdbID" style="border-color:#fa1b5e; border-radius: 100px 50px / 50px; background-color: rgb(222, 80, 9)"><span class="glyphicon glyphicon-trash"/></a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+</div>
+
+
+<footer>
+    
+<form  asp-action="index" method="post">
+
+@{  
+
+            if (ViewBag.onlyShowNextButton == "none")
+            {
+                
+            }
+            else if (ViewBag.onlyShowNextButton == "true")
+            {
+                    <button class="btn btn-light" type="submit" name="pageDirection" value="Next"><span class="glyphicon glyphicon-chevron-right"></span></button>
+                
+            }
+            else if (ViewBag.onlyShowNextButton == "false")
+            {
+                    <button class="btn btn-light" type="submit" name="pageDirection" value="Prev"><span class="glyphicon glyphicon-chevron-left"></span></button>
+            }
+            else
+            {
+                    <button style="margin-right:5px; display:inline-block" class="btn btn-light" type="submit" name="pageDirection" value="Prev"><span class="glyphicon glyphicon-chevron-left"></span></button> 
+                    <button class="btn btn-light" style="display:inline-block"  type="submit" name="pageDirection" value="Next"><span class="glyphicon glyphicon-chevron-right"></span></button>
+            }
+
+}
+
+
+</form>
+<p style="font-size:12px;float:left">Viewing items: @Model.ViewString</p>
+<a asp-action="IndexAll" style="float:right">View All</a>
+<br />
+</footer>

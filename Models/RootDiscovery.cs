@@ -5,9 +5,8 @@ using System.Threading.Tasks;
 
 namespace MovieDataBase.Models
 {
-    public class ViewModelMovie
+    public class RootDiscovery
     {
-        public RootObject SearchResults { get; set; }
-        public Movie Movies { get; set; }
+        public string[] TopByGenre { get; set; }
     }
 }

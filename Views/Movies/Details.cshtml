@@ -4,27 +4,50 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>Details for @Model.Title</h1>
+<img style="float:right" src="@Model.Poster" alt="no image found for this title"/> 
 
 <div>
-    <h4>Movie</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ReleaseDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ReleaseDate)
-        </dd>
+
+        <dt class = "col-sm-2"><a href="https://www.imdb.com/title/@Model.imdbID" target="_blank">Learn more</a></dt>
+        <dd class = "col-sm-10"> </dd>
+        
+        <dt class = "col-sm-2">Title</dt>
+        <dd class = "col-sm-10">@Html.DisplayFor(model => model.Title)</dd>
+        
+        <dt class = "col-sm-2">Release Date</dt>
+        <dd class = "col-sm-10">@Html.DisplayFor(model => model.Released)</dd>
+        
+        <dt class = "col-sm-2">Genre</dt>
+        <dd class = "col-sm-10">@Html.DisplayFor(model => model.Genre)</dd>
+        
+        <dt class = "col-sm-2">Box Office</dt>
+        <dd class = "col-sm-10">@Html.DisplayFor(model => model.BoxOffice)</dd>
+          
+        <dt class = "col-sm-2">Rating (@Model.imdbVotes votes)</dt>
+        <dd class = "col-sm-10">@Html.DisplayFor(model => model.imdbRating )</dd>
+
+        <dt class = "col-sm-2">Director</dt>
+        <dd class = "col-sm-10">@Html.DisplayFor(model => model.Director )</dd>
+         
+        <dt class = "col-sm-2">Run time</dt>
+        <dd class = "col-sm-10">@Html.DisplayFor(model => model.Runtime )</dd>
+          
+        <dt class = "col-sm-2">Awards)</dt>
+        <dd class = "col-sm-10">@Html.DisplayFor(model => model.Awards )</dd>
+          
+        <dt class = "col-sm-2">Rated</dt>
+        <dd class = "col-sm-10">@Html.DisplayFor(model => model.Rated )</dd>
+        
+        <dt class = "col-sm-2">Plot</dt>
+        <dd class = "col-sm-10">@Html.DisplayFor(model => model.Plot )</dd>
+          
+
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model.imdbID">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
